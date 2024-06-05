@@ -76,3 +76,15 @@ source ~/your_ros2_wksp/install/setup.bash
 | `ros2 launch robovisor joystick.launch.py` | Inicia controlador via joystick do XBox. (Não testado nesse pacote) |
 | `ros2 run robovisor zlac/robovisor_nome` | Inicia node de controle e comunicação com driver. (Não testado nesse pacote) |
 | `ros2 run robovisor odom_dump` | Publica ondas e salva resposta em arquivo `.csv`. (Não testado nesse pacote) |
+
+## Execução principal do pacote
+
+Este pacote apresenta diversos arquivos launch para diferentes funções, conforme descrito acima. Entretanto, para executar todas as funcionalidades com robô + câmera, existe um script principal
+
+```bash
+cd ~/your_ros2_wksp/scripts
+./runRobot.bash
+```
+O script executa dois terminais: O primeiro, principal, que inicia o launch ```yolo_general.launch.py```, que pode iniciar o driver, mapeamento, lidar e RVIz. O segundo, inicia o ZED Wrapper paralelamente ao launch princial com os dois tipos de cameras presentes no laboratório: ZED e ZEDm. O motivo para isso é solucionar o conflito de inicialização do ZED Wrapper com a do RPLidar, não iniciando-o por problemas de TIMEOUT. 
+
+O launch ```yolo_general.launch.py``` foi construido de modo a englobar todas as funcionalidades disponíveis do robô móvel, selecionando qual é a desejada no momento. Para isso, é necessário acessar o arquivo config/robot_parameters.yaml e selecionar a partir dos comentários cada uma das coisas.
