@@ -1,46 +1,49 @@
-# robovisor
-workspace pra desenvolver código ROS2 para o projeto de iniciação científica MAI/DAI Robovisor 
-2023 sob supervisão do Prof. Dr. Roberto Inoue
+# Robô móvel - mobileRobDev
+Repositório utilizado pra desenvolver o código-fonte do driver dos robôs móveis presentes no LARIS para a execução do projeto FAPESP 2023/06578-6, sob orientação do Prof. Dr. Roberto Inoue
 
-## dependências
+## Dependências
 
-as dependências agora são instaladas automaticamente pelo arquivo ```docker/Dockerfile.robovisor```.
-novas dependências também devem ser adicionadas nesse arquivo
+As dependências se baseiam em pacotes e bibliotecas para o ROS2 Foxy e algumas nativas do sistema operacional Ubuntu 20.04 para a NVIDIA Jetson Xavier NX
 
-## instalação
+* Bibliotecas Ubuntu
 
-instalar isaac_ros_common para utilização do docker:
+```bash
+sudo apt-get update
+sudo apt-get install -y \
+	libmodbus-dev \
+	tmux \
+	ros-foxy-xacro \
+	ros-foxy-joint-state-publisher \
+	ros-foxy-joy \
+	ros-foxy-teleop-twist-joy \
+	ros-foxy-teleop-twist-keyboard \
+	ros-foxy-rplidar-ros \
+	ros-foxy-laser-filters \
+	ros-foxy-rqt \
+	ros-foxy-rqt-common-plugins \
+	ros-foxy-rmw-cyclonedds-cpp \
+	ros-foxy-slam-toolbox \
+	net-tools 
 ```
-$ cd ~
-$ git clone git@github.com:NVIDIA-ISAAC-ROS/isaac_ros_common.git
-$ cd isaac_ros_common/scripts
+* Camera ZED
+  
+Para o uso de câmera ZED, compilar o pacote Wrapper ROS2, encontrado neste [link](https://github.com/stereolabs/zed-ros2-wrapper).
+
+## Instalação
+
+A instalação segue a mesma estrutura de um pacote convencional ROS2 pelos seguintes passos:
+```bash
+mkdir -p ~/your_ros2_wksp/src/ # create your workspace if it does not exist
+cd ~/your_ros2_wksp/src/ #use your current ros2 workspace folder
+git clone https://github.com/joaocarloscampi/mobileRobDev.git
+
+cd ..
+sudo apt update
+colcon build --symlink-install
+
+source ~/your_ros2_wksp/install/setup.bash
 ```
 
-dentro da pasta scripts, criar o arquivo ```.isaac_ros_common-config```:
-```
-CONFIG_IMAGE_KEY="ros2_humble.robovisor"
-CONFIG_DOCKER_SEARCH_DIRS="../../workspaces/isaac_ros-dev/robovisor_ws/src/mobileRobDev/docker"
-```
-
-será necessário instalar pacotes do docker, como ```docker.io```ou ```docker.buildx```
-
-criar um workspace ros2:
-```
-$ mkdir -p ~/workspaces/isaac_ros-dev/robovisor_ws/src
-$ cd workspaces/isaac_ros-dev/robovisor_ws
-$ colcon build
-$ cd src
-```
-clonar o workspace localmente com ```git clone -b develop git@github.com:rsinoue/mobileRobDev.git```.
-compilar novamente o ambiente com ```colcon build --symlink-install``` em ```robovisor_ws```.
-
-para desenvolver o código ou navegar o robô, sempre utilizar o docker, rodando o comando em
-```~/isaac_ros_common/scripts```:
-```
-$ ./run_dev.sh
-```
-o docker mapeia imediatamente os devices USB já conectados e montados em ```/dev``` para dentro 
-do ambiente. as interfaces GUI também funcionam normalmente.
 
 ## estrutura
 
