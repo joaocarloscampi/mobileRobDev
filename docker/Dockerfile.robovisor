@@ -1,0 +1,35 @@
+ARG BASE_IMAGE
+FROM ${BASE_IMAGE}
+
+ENV DEBIAN_FRONTEND=noninteractive
+ENV SHELL /bin/bash
+ENV TERM=xterm-256color
+SHELL ["/bin/bash", "-c"]
+
+RUN locale-gen en_US en_US.UTF-8
+RUN update-locale LC_ALL=en_US.UTF-8 LANG=en_US.UTF-8
+ENV LANG=en_US.UTF-8
+ENV ROS_PYTHON_VERSION=3
+ENV ROS_DISTRO=humble
+ENV ROS_ROOT=/opt/ros/${ROS_DISTRO}
+ENV RMW_IMPLEMENTATION=rmw_fastrtps_cpp
+
+RUN curl -fsSL https://raw.githubusercontent.com/augustocamaral2003/dotfiles/master/.vimrc > /root/.vimrc
+RUN curl -fsSL https://raw.githubusercontent.com/augustocamaral2003/dotfiles/master/.bashrc_wsl >> /root/.bashrc
+RUN curl -fsSL https://raw.githubusercontent.com/augustocamaral2003/dotfiles/master/.tmux.conf > /root/.tmux.conf
+
+RUN apt-get update && apt-get install -y \
+	libmodbus-dev \
+	tmux \
+	ros-humble-xacro \
+	ros-humble-joint-state-publisher \
+	ros-humble-joy \
+	ros-humble-teleop-twist-joy \
+	ros-humble-teleop-twist-keyboard \
+	ros-humble-rplidar-ros \
+	ros-humble-laser-filters \
+	ros-humble-rqt \
+	ros-humble-rqt-common-plugins \
+	gnuplot \
+&& rm -rf /var/lib/apt/lists/* \
+&& apt-get clean

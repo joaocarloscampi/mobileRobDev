@@ -1,0 +1,94 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="robo_dc">
+	<!-- Standard cordinate frame -->
+	<!--
+	<link name="camera_link">
+		<visual>
+			<geometry>
+				<box size="${camera_length} ${camera_width} ${camera_height}"/>
+			</geometry>
+			<origin xyz="0 0 0" rpy="0 0 0"/>
+			<material name="camera_color">
+				<color rgba="${grey}"/>
+			</material>
+		</visual>
+
+		<collision>
+			<geometry>
+				<box size="${camera_length} ${camera_width} ${camera_height}"/>
+			</geometry>
+			<origin xyz="0 0 0" rpy="0 0 0"/>
+		</collision>
+
+		<xacro:inertial_box mass="1" x="${camera_length}" y="${camera_width}" z="${camera_height}">
+			<origin xyz="0 0 0" rpy="0 0 0"/>
+		</xacro:inertial_box>
+	</link>
+
+	<joint name="camera_joint" type="fixed">
+		<parent link="roof_link"/>
+		<child link="camera_link"/>
+		<origin xyz="${roof_radius - camera_length} 0 ${-laser_length/2}" rpy="0 0 -${pi}"/>
+	</joint>
+	-->
+	
+	<!-- Uses a TF frame for all images -->
+	<!--
+	<joint name="camera_joint_optical" type="fixed">
+		<parent link="camera_link"/>
+		<child link="camera_link_optical"/>
+		<origin xyz="0 0 0" rpy="${-pi/2} 0 ${-pi/2}"/>
+	</joint>
+
+	<link name="camera_link_optical"></link> 
+	-->
+	
+	<!-- Zed mini camera-->
+	<!--
+	<xacro:arg name="camera_name"   default="zedm"/>
+  	<xacro:arg name="camera_model"  default="zedm"/>
+  	<xacro:arg name="use_zed_localization" default="false"/>
+	<xacro:include filename="$(find zed_wrapper)/urdf/zed_macro.urdf.xacro"/>
+	<xacro:zed_camera name="zedm" model="zedm" parent="roof_link">
+		<origin xyz="0.0 0.0 0.38" rpy="0 0 0"/>
+	</xacro:zed_camera>
+	-->
+	
+	<xacro:property name="yaml_file" value="$(find robovisor)/config/robot_parameters.yaml" />
+	<xacro:property name="dict" value="${load_yaml(yaml_file)}"/>
+	<xacro:property name="zed_camera_model" value="${dict['zed_camera_model']}" />	
+	
+	<xacro:if value="${zed_camera_model == 'zed'}">
+		<xacro:arg name="camera_name"   default="zed"/>
+	  	<xacro:arg name="camera_model"  default="zed"/>
+	  	<xacro:arg name="use_zed_localization" default="false"/>
+		<xacro:include filename="$(find zed_wrapper)/urdf/zed_macro.urdf.xacro"/>
+		<xacro:zed_camera name="zed" model="zed" parent="roof_link">
+			<origin xyz="0.0 0.0 0.38" rpy="0 0 0"/>
+			<!--<origin xyz="${roof_radius - camera_length + 0.05} 0 ${-laser_length/2 + 0.05}" rpy="0 0 0"/>-->
+		</xacro:zed_camera>
+	</xacro:if>
+	<xacro:if value="${zed_camera_model == 'zedm'}">
+		<xacro:arg name="camera_name"   default="zedm"/>
+	  	<xacro:arg name="camera_model"  default="zedm"/>
+	  	<xacro:arg name="use_zed_localization" default="false"/>
+		<xacro:include filename="$(find zed_wrapper)/urdf/zed_macro.urdf.xacro"/>
+		<xacro:zed_camera name="zedm" model="zedm" parent="roof_link">
+			<origin xyz="0.0 0.0 0.38" rpy="0 0 0"/>
+		</xacro:zed_camera>
+	</xacro:if>
+	
+	<!--   DEFAULT VALUE    -->
+	<xacro:if value="${zed_camera_model != 'zedm'}">
+		<xacro:if value="${zed_camera_model != 'zed'}">
+			<xacro:arg name="camera_name"   default="zedm"/>
+		  	<xacro:arg name="camera_model"  default="zedm"/>
+		  	<xacro:arg name="use_zed_localization" default="false"/>
+			<xacro:include filename="$(find zed_wrapper)/urdf/zed_macro.urdf.xacro"/>
+			<xacro:zed_camera name="zedm" model="zedm" parent="roof_link">
+				<origin xyz="0.0 0.0 0.38" rpy="0 0 0"/>
+			</xacro:zed_camera>
+		</xacro:if>
+	</xacro:if>
+
+</robot>

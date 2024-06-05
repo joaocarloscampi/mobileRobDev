@@ -1,0 +1,27 @@
+# Options: zlac, movebase
+robot: zlac
+
+
+# Options: true, false
+teleop_keyboard: false
+
+
+# Options: true, false
+zed_scan: false
+# Options: zed, zedm
+zed_camera_model: zed
+
+
+# Options: true, false
+lidar: true
+# Options: true, false
+filter_lidar: true
+
+
+# Options: true, false
+slam_toolbox: true
+# For change slam_toolbox mode, go to it's file parameters 
+
+
+# Options: true, false
+rviz: false
