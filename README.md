@@ -45,28 +45,34 @@ source ~/your_ros2_wksp/install/setup.bash
 ```
 
 
-## estrutura
+## Estrutura do repositório
 
 | Diretório | Descrição |
 |-----------|-----------|
-| config    | Contém configs para o slam_toolbox e Nav2. |
-| docker    | Dockerfile para execução do ambiente com isaac_ros_common. |
-| include   | Contém headers para os nodes. |
+| config    | Arquvios de configuração para o slam_toolbox, Nav2 (Não utilizado ainda) e do robô |
+| docker    | Dockerfile para execução do ambiente com isaac_ros_common. (Não utilizado) |
+| include   | Headers para os nodes. |
 | launch    | Contém launch files. |
-| maps      | Contém mapas salvos mapeados por SLAM. |
-| rviz      | Contém configs para visualização no rviz. |
-| src       | Contém código fonte dos nodes. |
+| maps      | Contém mapas salvos gerados pelo pacote slam_toolbox. |
+| rviz      | Contém os arquivos de configuração para visualização no rviz. |
+| src       | Contém o código fonte dos nodes. |
 | urdf      | Contém descrição do robô em urdf, com macros para simulação em Gazebo e macros de inércia. |
-| worlds    | Contém mapas salvos para execução no Gazebo. |
+| worlds    | Contém mapas salvos para execução no Gazebo. (Não utilizado) |
 
-## launch files
+## Arquivos de execução launch
 
 | Comando | Descrição |
 |---------|-----------|
-| `ros2 launch robovisor publisher.launch.py` | Inicia robot_state_publisher e rviz para visualização do robô. Inicia simulador caso indicado. |
-| `ros2 launch robovisor simulation.launch.py` | Inicia Gazebo com mapa padrão, inicializa robô na simulação. |
-| `ros2 launch robovisor slam.launch.py` | Inicia mapeamento SLAM. |
-| `ros2 launch robovisor navigation.launch.py` | Inicia navegação com Nav2. |
-| `ros2 launch robovisor joystick.launch.py` | Inicia controlador via joystick do XBox. |
-| `ros2 run robovisor zlac/robovisor_nome` | Inicia node de controle e comunicação com driver. |
-| `ros2 run robovisor odom_dump` | Publica ondas e salva resposta em arquivo `.csv`. |
+| `ros2 launch robovisor yolo_general.launch.py` | Inicia todas as funcionalidades do robô com base no arquivo de configuração robot_parameters.yaml. |
+| `ros2 launch robovisor yolo_robot.launch.py` | Inicia robot_state_publisher e rviz para visualização do robô com driver ZLAC. |
+| `ros2 launch robovisor yolo_robot_movebase.launch.py` | Inicia robot_state_publisher e rviz para visualização do robô com driver antigo (movebase). |
+| `ros2 launch robovisor yolo_mapping.launch.py` | Inicia o mapeamento com o slam_toolbox e yolo_robot. |
+| `ros2 launch robovisor yolo_zed.launch.py` | Inicia o ZED Wrapper para a inicialização da câmera. |
+| `ros2 launch robovisor map_saver.launch.py` | Inicia o server para salvar o mapa. |
+| `ros2 launch robovisor publisher.launch.py` | Inicia robot_state_publisher e rviz para visualização do robô. Inicia simulador caso indicado. (Não testado nesse pacote) |
+| `ros2 launch robovisor simulation.launch.py` | Inicia Gazebo com mapa padrão, inicializa robô na simulação. (Não testado nesse pacote) |
+| `ros2 launch robovisor slam.launch.py` | Inicia mapeamento SLAM. (Não testado nesse pacote) |
+| `ros2 launch robovisor navigation.launch.py` | Inicia navegação com Nav2. (Não testado nesse pacote) |
+| `ros2 launch robovisor joystick.launch.py` | Inicia controlador via joystick do XBox. (Não testado nesse pacote) |
+| `ros2 run robovisor zlac/robovisor_nome` | Inicia node de controle e comunicação com driver. (Não testado nesse pacote) |
+| `ros2 run robovisor odom_dump` | Publica ondas e salva resposta em arquivo `.csv`. (Não testado nesse pacote) |
