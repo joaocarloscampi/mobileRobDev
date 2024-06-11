@@ -24,6 +24,10 @@ def generate_launch_description():
 	map_saver_params_file = 'map_saver_params.yaml'
 	map_save_config = os.path.join(bringup_dir, 'config', map_saver_params_file)
 
+	# AMCL parametros
+	map_yaml_file = os.path.join(bringup_dir, 'maps', 'yolo_maps', 'lidar', 'map_1_lidar.yaml')
+	params_file = os.path.join(bringup_dir, 'config', 'nav2_params.yaml')
+
 	robot_config_file = os.path.join(bringup_dir, 'config/robot_parameters.yaml')
 	with open(robot_config_file, 'r') as file:
 		robotParams = yaml.safe_load(file)
@@ -37,6 +41,7 @@ def generate_launch_description():
 	slam_toolbox = robotParams['slam_toolbox']
 	teleop_keyboard = robotParams['teleop_keyboard']
 	rviz_enable = robotParams['rviz']
+	amcl_localization = robotParams['amcl_localization']
 	
 	print("Robot: ", robot)
 	print("Zed scan enable: ", zed_scan)
@@ -85,6 +90,8 @@ def generate_launch_description():
 
 	if slam_toolbox:
 		rviz_config_file=os.path.join(bringup_dir, 'rviz', 'nav2_yolo.rviz')
+	elif amcl_localization:
+		rviz_enable = False # Abrir RViz na mao (por enquanto)
 	else:
 		rviz_config_file=os.path.join(bringup_dir, 'rviz', 'view.rviz')
 	
@@ -127,6 +134,13 @@ def generate_launch_description():
 		list_launch_description.append(lifecycle_manager)
 		list_launch_description.append(slam)
 	
+	if amcl_localization:
+		nav2 = IncludeLaunchDescription(
+			PythonLaunchDescriptionSource([FindPackageShare('nav2_bringup'), '/launch', '/localization_launch.py']),
+			launch_arguments={'map': map_yaml_file, 'use_sim_time': 'false', 'params_file': params_file}.items()
+		)
+		list_launch_description.append(nav2)
+
 	if lidar:
 		if filter_lidar:
 			filter_lidar = 'true'

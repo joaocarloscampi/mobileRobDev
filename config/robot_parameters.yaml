@@ -9,19 +9,23 @@ teleop_keyboard: false
 # Options: true, false
 zed_scan: false
 # Options: zed, zedm
-zed_camera_model: zed
+zed_camera_model: zedm
 
 
 # Options: true, false
 lidar: true
 # Options: true, false
-filter_lidar: true
+filter_lidar: false
 
 
 # Options: true, false
-slam_toolbox: true
+slam_toolbox: false
 # For change slam_toolbox mode, go to it's file parameters 
 
 
 # Options: true, false
-rviz: false
+amcl_localization: true
+
+
+# Options: true, false
+rviz: true
