@@ -88,3 +88,12 @@ cd ~/your_ros2_wksp/scripts
 O script executa dois terminais: O primeiro, principal, que inicia o launch ```yolo_general.launch.py```, que pode iniciar o driver, mapeamento, lidar e RVIz. O segundo, inicia o ZED Wrapper paralelamente ao launch princial com os dois tipos de cameras presentes no laboratório: ZED e ZEDm. O motivo para isso é solucionar o conflito de inicialização do ZED Wrapper com a do RPLidar, não iniciando-o por problemas de TIMEOUT. 
 
 O launch ```yolo_general.launch.py``` foi construido de modo a englobar todas as funcionalidades disponíveis do robô móvel, selecionando qual é a desejada no momento. Para isso, é necessário acessar o arquivo config/robot_parameters.yaml e selecionar a partir dos comentários cada uma das coisas.
+
+## Execução da localização com AMCL
+
+Este pacote conta com a opção de realizar a localização com um mapa utilizando o filtro de particulas AMCL, do pacote NAV2. A execução dele necessita de alguns passos a mais:
+- Inicie o RVIZ e abra o arquivo de configuração localizado em `rviz/localization.rviz`;
+- Execute o launch `yolo_general.launch.py` (ou o script `./runRobot.bash`) e espere o mapa carregar no rviz;
+- Utilize a ferramenta 2D Pose Estimation do rviz para fornecer a posição atual do robô executado. Houve a tentativa de fornecer uma posição ideal a partir dos parâmetros, mas o pacote do AMCL quebra ao movimentar o robô.
+
+O arquivo de mapa por enquanto é fixo, como um arquivo de mapa padrão do 2º andar do Departamento de Computaçao. Caso deseje alterar o mapa, entre no launch `yolo_general.launch.py` e troque manualmente.
